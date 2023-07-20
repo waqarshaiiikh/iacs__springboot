@@ -63,9 +63,8 @@ public class Project {
     @Column(nullable = false)
     private List<String> teamComposition;
 
-    @ElementCollection
     @Column(nullable = false)
-    private List<Long> departmentsId;
+    private Long departmentId;
 
     @Column(nullable = false)
     private String contact;
@@ -77,7 +76,7 @@ public class Project {
     
     @Transient
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)    
-    private List<String> departmentsName;
+    private String departmentName;
     
     /**
      * use for active and deactivated the project

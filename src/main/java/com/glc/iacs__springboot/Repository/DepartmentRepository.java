@@ -11,6 +11,6 @@ import com.glc.iacs__springboot.Model.Department;
 @Repository
 public interface DepartmentRepository  extends JpaRepository<Department, Long>{
     
-    @Query("SELECT d.departmentName FROM Department  d WHERE d.id IN :ids")
-    List<String> findDepartmentNamesByIds(List<Long> ids);
+    @Query("SELECT d.departmentName FROM Department  d WHERE d.id = :id")
+    String findDepartmentNamesByIds(Long id);
 }

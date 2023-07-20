@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.glc.iacs__springboot.Model.Project;
@@ -35,6 +36,24 @@ public class ProjectController {
         // this.projectRepository= projectRepository;
     // }
     
+    @GetMapping("/industry")
+    public ResponseEntity<List<Project>> getAllProjectsByIndustry(@RequestParam(name = "id") Long industryId){
+        try{
+            List <Project> projects =   projectRepository.findActiveProjectsByIndustryId(industryId);
+            projects.forEach(project->{
+              List<String> skillName =  skillRepository.findSkillNamesByIds(project.getSkillsId());
+              String departmentName =  departmentRepository.findDepartmentNamesByIds(project.getDepartmentId());
+              project.setDepartmentName(departmentName);
+              project.setSkillsName(skillName);
+            });
+            
+
+            return ResponseEntity.status(200).body( projects );
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
     @GetMapping
     public ResponseEntity<List<Project>> getAllProjects(){
         // @RequestBody Long industryId
@@ -42,8 +61,8 @@ public class ProjectController {
             List <Project> projects =   projectRepository.findByActiveIsTrue();
             projects.forEach(project->{
               List<String> skillName =  skillRepository.findSkillNamesByIds(project.getSkillsId());
-              List<String> departmentName =  departmentRepository.findDepartmentNamesByIds(project.getDepartmentsId());
-              project.setDepartmentsName(departmentName);
+              String departmentName =  departmentRepository.findDepartmentNamesByIds(project.getDepartmentId());
+              project.setDepartmentName(departmentName);
               project.setSkillsName(skillName);
             });
             
@@ -61,14 +80,14 @@ public class ProjectController {
         try {
               Project saveProject = projectRepository.save(project);
               List<String> skillName =  skillRepository.findSkillNamesByIds(saveProject.getSkillsId());
-              List<String> departmentName =  departmentRepository.findDepartmentNamesByIds(saveProject.getDepartmentsId());
-              saveProject.setDepartmentsName(departmentName);
+              String departmentName =  departmentRepository.findDepartmentNamesByIds(saveProject.getDepartmentId());
+              saveProject.setDepartmentName(departmentName);
               saveProject.setSkillsName(skillName);
               return ResponseEntity.status(200).body(saveProject);
 
         } catch (Exception e) {
 
-            System.out.println(e.getSuppressed());
+            System.out.println(e.getMessage());
 
             return ResponseEntity.badRequest().build();
         }
