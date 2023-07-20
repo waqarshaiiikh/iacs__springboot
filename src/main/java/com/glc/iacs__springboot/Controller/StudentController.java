@@ -15,6 +15,7 @@ import com.glc.iacs__springboot.Repository.StudentRepository;
 @RestController
 @RequestMapping("/student")
 @CrossOrigin(origins = "*")
+
 public class StudentController {
 
     private final StudentRepository studentRepository;

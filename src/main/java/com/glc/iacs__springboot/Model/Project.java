@@ -1,11 +1,14 @@
 package com.glc.iacs__springboot.Model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.json.JsonWriteFeature;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -16,6 +19,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -65,7 +69,16 @@ public class Project {
 
     @Column(nullable = false)
     private String contact;
-
+    
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private List<String> skillsName;
+    
+    
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)    
+    private List<String> departmentsName;
+    
     /**
      * use for active and deactivated the project
      */
@@ -76,18 +89,24 @@ public class Project {
     @Column(nullable = false)
     private Long industryId;
 
+
+
     /**
      * now set json ignore for this field when getting the project otherwise set the applied project is allowed.
      */
     @JsonIgnore
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private Set<AppliedStudents> appliedStudents;
-
+    private Set<AppliedStudents> appliedStudents = new HashSet<AppliedStudents>();
 
     public List<Student> getAllStudents() {
-        return appliedStudents.stream()
+        // if(!this.appliedStudents.isEmpty()) 
+        // {
+            return appliedStudents.stream()
                 .map(AppliedStudents::getStudent)
                 .collect(Collectors.toList());
+        // }else{
+        //     return new ArrayList<Student>();
+        // }
     }
 
 }

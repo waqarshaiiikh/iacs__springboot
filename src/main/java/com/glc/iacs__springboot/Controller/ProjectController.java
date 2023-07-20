@@ -13,26 +13,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.glc.iacs__springboot.Model.Project;
+import com.glc.iacs__springboot.Repository.DepartmentRepository;
 import com.glc.iacs__springboot.Repository.ProjectRepository;
+import com.glc.iacs__springboot.Repository.SkillRepository;
 
 @RestController
 @RequestMapping("/project")
 @CrossOrigin(origins = "*")
 public class ProjectController {
     
-    // @Autowired
-    private final ProjectRepository projectRepository;
+    @Autowired
+    private  ProjectRepository projectRepository;
+    
+    @Autowired 
+    private SkillRepository skillRepository;
 
-    public ProjectController(ProjectRepository projectRepository) {
-        this.projectRepository= projectRepository;
-    }
+    @Autowired
+    private DepartmentRepository departmentRepository;
 
+    // public ProjectController(ProjectRepository projectRepository) {
+        // this.projectRepository= projectRepository;
+    // }
+    
     @GetMapping
     public ResponseEntity<List<Project>> getAllProjects(){
         // @RequestBody Long industryId
         try{
             List <Project> projects =   projectRepository.findByActiveIsTrue();
-
+            projects.forEach(project->{
+              List<String> skillName =  skillRepository.findSkillNamesByIds(project.getSkillsId());
+              List<String> departmentName =  departmentRepository.findDepartmentNamesByIds(project.getDepartmentsId());
+              project.setDepartmentsName(departmentName);
+              project.setSkillsName(skillName);
+            });
+            
 
             return ResponseEntity.status(200).body( projects );
         } catch (Exception e) {
@@ -45,8 +59,12 @@ public class ProjectController {
      postingProject(@RequestBody Project project)
      {
         try {
-            
-            return ResponseEntity.status(200).body(projectRepository.save(project));
+              Project saveProject = projectRepository.save(project);
+              List<String> skillName =  skillRepository.findSkillNamesByIds(saveProject.getSkillsId());
+              List<String> departmentName =  departmentRepository.findDepartmentNamesByIds(saveProject.getDepartmentsId());
+              saveProject.setDepartmentsName(departmentName);
+              saveProject.setSkillsName(skillName);
+              return ResponseEntity.status(200).body(saveProject);
 
         } catch (Exception e) {
 
