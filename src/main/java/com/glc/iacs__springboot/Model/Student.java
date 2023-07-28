@@ -4,9 +4,12 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
@@ -36,11 +39,12 @@ public class Student {
     @Column(columnDefinition = "VARCHAR2(10 BYTE)", nullable = false)
     private String lname;
     
-
+    
     @Column(columnDefinition = "VARCHAR2(50 BYTE)", nullable = false)
     private String email;
     
-
+    
+    @JsonIgnore
     @Column(columnDefinition = "VARCHAR2(73 BYTE)", nullable = false)
     private String password;
     
@@ -55,6 +59,7 @@ public class Student {
     @Column(columnDefinition = "VARCHAR2(10 BYTE)", nullable = false)
     private String department;
     
+    @JsonIgnore
     @Column(columnDefinition = "VARCHAR2(15 BYTE)", nullable = false)
     private String university;
     
@@ -62,20 +67,25 @@ public class Student {
     @Column(columnDefinition = "VARCHAR2(20 BYTE)", nullable = false)
     private String phonenumber;
     
+    @JsonIgnore
     @Column(columnDefinition = "CHAR(1 BYTE)", nullable = false)
     private String year;
     
     
+    @JsonIgnore
     @Column(columnDefinition = "CHAR(1 BYTE)", nullable = false)
     private String semester;
     
+    @JsonIgnore
     @Column(columnDefinition = "DATE", nullable = true)
     private Date dob;
     
     
+    @JsonIgnore
     @Column(columnDefinition = "VARCHAR2(100 BYTE)", nullable = true)
     private String address;
     
+    @JsonIgnore
     @Column(columnDefinition = "CHAR(1 BYTE)", nullable = true)
     private String gender;
     
@@ -85,11 +95,8 @@ public class Student {
     @Column(columnDefinition = "VARCHAR2(200 BYTE)", nullable = true)
     private String pic;
     
-    
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany( fetch = FetchType.LAZY  , mappedBy = "student", cascade = CascadeType.ALL)
     private Set<AppliedStudents> appliedStudents = new HashSet<>();
-
-
-
 
 }

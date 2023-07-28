@@ -41,10 +41,10 @@ public class ProjectController {
         try{
             List <Project> projects =   projectRepository.findActiveProjectsByIndustryId(industryId);
             projects.forEach(project->{
-              List<String> skillName =  skillRepository.findSkillNamesByIds(project.getSkillsId());
+            //   List<String> skillName =  skillRepository.findSkillNamesByIds(project.getSkillsId());
               String departmentName =  departmentRepository.findDepartmentNamesByIds(project.getDepartmentId());
               project.setDepartmentName(departmentName);
-              project.setSkillsName(skillName);
+            //   project.setSkillsName(skillName);
             });
             
 
@@ -60,10 +60,10 @@ public class ProjectController {
         try{
             List <Project> projects =   projectRepository.findByActiveIsTrue();
             projects.forEach(project->{
-              List<String> skillName =  skillRepository.findSkillNamesByIds(project.getSkillsId());
+            //   List<String> skillName =  skillRepository.findSkillNamesByIds(project.getSkillsId());
               String departmentName =  departmentRepository.findDepartmentNamesByIds(project.getDepartmentId());
               project.setDepartmentName(departmentName);
-              project.setSkillsName(skillName);
+            //   project.setSkillsName(skillName);
             });
             
 
@@ -79,10 +79,10 @@ public class ProjectController {
      {
         try {
               Project saveProject = projectRepository.save(project);
-              List<String> skillName =  skillRepository.findSkillNamesByIds(saveProject.getSkillsId());
+            //   List<String> skillName =  skillRepository.findSkillNamesByIds(saveProject.getSkillsId());
               String departmentName =  departmentRepository.findDepartmentNamesByIds(saveProject.getDepartmentId());
               saveProject.setDepartmentName(departmentName);
-              saveProject.setSkillsName(skillName);
+            //   saveProject.setSkillsName(skillName);
               return ResponseEntity.status(200).body(saveProject);
 
         } catch (Exception e) {

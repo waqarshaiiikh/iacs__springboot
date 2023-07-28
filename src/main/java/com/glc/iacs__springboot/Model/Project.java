@@ -41,9 +41,9 @@ public class Project {
     @Column(nullable = false)
     private String title;
 
-    @ElementCollection
-    @Column(nullable = false)
-    private List<Long> skillsId;
+    // @ElementCollection
+    // @Column(nullable = false)
+    // private List<Long> skillsId;
 
     @Column(columnDefinition = "CLOB", nullable = false)
     private String statement;
@@ -59,9 +59,6 @@ public class Project {
     @Column(columnDefinition = "CLOB", nullable = false)
     private String methodology;
 
-    @ElementCollection
-    @Column(nullable = false)
-    private List<String> teamComposition;
 
     @Column(nullable = false)
     private Long departmentId;
@@ -69,8 +66,10 @@ public class Project {
     @Column(nullable = false)
     private String contact;
     
-    @Transient
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    // @Transient
+    // @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @ElementCollection
+    @Column(nullable = false)
     private List<String> skillsName;
     
     
@@ -93,19 +92,9 @@ public class Project {
     /**
      * now set json ignore for this field when getting the project otherwise set the applied project is allowed.
      */
-    @JsonIgnore
+    // @JsonIgnore
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private Set<AppliedStudents> appliedStudents = new HashSet<AppliedStudents>();
-
-    public List<Student> getAllStudents() {
-        // if(!this.appliedStudents.isEmpty()) 
-        // {
-            return appliedStudents.stream()
-                .map(AppliedStudents::getStudent)
-                .collect(Collectors.toList());
-        // }else{
-        //     return new ArrayList<Student>();
-        // }
-    }
+    
 
 }

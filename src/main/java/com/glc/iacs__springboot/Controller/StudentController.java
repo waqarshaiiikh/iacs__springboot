@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.glc.iacs__springboot.Model.Student;
@@ -35,5 +36,17 @@ public class StudentController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+
+    @GetMapping("/detail")
+    public ResponseEntity<Student> getSpecificStudent(@RequestParam(name = "id")  Long id){
+        try{
+            return ResponseEntity.status(200).body(  studentRepository.findById(id).get() );
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 
 }

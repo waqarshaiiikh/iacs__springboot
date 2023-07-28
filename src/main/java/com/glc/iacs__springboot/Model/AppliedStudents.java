@@ -3,6 +3,7 @@ package com.glc.iacs__springboot.Model;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -13,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,7 +42,8 @@ public class AppliedStudents {
 
     @ElementCollection
     @Column(nullable = false)
-    private List<Long> skillsId;
+    private List<String> skillsName;
+
     
     
     @Column(columnDefinition = "CLOB", nullable= false)
@@ -57,7 +60,13 @@ public class AppliedStudents {
     @Column(nullable = false)
     private String advisorContact;
 
-    @JsonIgnore
+    
+    @ElementCollection
+    @Column(nullable = false)
+    private List<String> teamComposition;
+
+    
+    // @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER , optional = false)
     @JoinColumn(name = "student_id")
     private Student student;
@@ -70,7 +79,6 @@ public class AppliedStudents {
 
 
 
-    
     public Long getStudentId() {
         if (student != null) {
             return student.getId();
@@ -78,7 +86,7 @@ public class AppliedStudents {
         return null;
     }
 
-    
+    @JsonIgnore
     public Long getProjectId() {
         if (project != null) {
             return project.getId();
