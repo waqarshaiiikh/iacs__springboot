@@ -1,9 +1,9 @@
 package com.glc.iacs__springboot.Controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +26,8 @@ public class ProjectController {
     @Autowired
     private  ProjectRepository projectRepository;
     
-    @Autowired 
-    private SkillRepository skillRepository;
+    // @Autowired 
+    // private SkillRepository skillRepository;
 
     @Autowired
     private DepartmentRepository departmentRepository;
@@ -39,7 +39,7 @@ public class ProjectController {
     @GetMapping("/industry")
     public ResponseEntity<List<Project>> getAllProjectsByIndustry(@RequestParam(name = "id") Long industryId){
         try{
-            List <Project> projects =   projectRepository.findActiveProjectsByIndustryId(industryId);
+            List <Project> projects =   projectRepository.findActiveProjectsByIndustryId(industryId, new Date());
             projects.forEach(project->{
             //   List<String> skillName =  skillRepository.findSkillNamesByIds(project.getSkillsId());
               String departmentName =  departmentRepository.findDepartmentNamesByIds(project.getDepartmentId());
@@ -58,7 +58,9 @@ public class ProjectController {
     public ResponseEntity<List<Project>> getAllProjects(){
         // @RequestBody Long industryId
         try{
-            List <Project> projects =   projectRepository.findByActiveIsTrue();
+            List <Project> projects =   projectRepository.findByActiveIsTrue(new Date());
+            // List <Project> projects =   projectRepository.findAll();
+            
             projects.forEach(project->{
             //   List<String> skillName =  skillRepository.findSkillNamesByIds(project.getSkillsId());
               String departmentName =  departmentRepository.findDepartmentNamesByIds(project.getDepartmentId());

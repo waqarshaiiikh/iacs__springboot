@@ -1,14 +1,11 @@
 package com.glc.iacs__springboot.Model;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.json.JsonWriteFeature;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -17,7 +14,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.MapsId;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
@@ -46,17 +43,25 @@ public class Project {
     // private List<Long> skillsId;
 
     @Column(columnDefinition = "CLOB", nullable = false)
+    @Lob
     private String statement;
 
     @Column(columnDefinition = "CLOB", nullable = false)
+    @Lob
     private String description;
+
+
+    
     @Column(columnDefinition = "CLOB", nullable = false)
+    @Lob
     private String scope;
 
     @Column(columnDefinition = "CLOB", nullable = false)
+    @Lob
     private String deliverables;
 
     @Column(columnDefinition = "CLOB", nullable = false)
+    @Lob
     private String methodology;
 
 
@@ -66,6 +71,12 @@ public class Project {
     @Column(nullable = false)
     private String contact;
     
+    @Column(nullable = true)
+    private Date postDate;
+
+    @Column(nullable = true)
+    private Date deadlineDate;
+
     // @Transient
     // @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ElementCollection
